@@ -8,6 +8,28 @@ sudo echo "deb http://pkg.jenkins-ci.org/debian binary/" >> /etc/apt/sources.lis
 apt-get update
 apt-get install -y apache2 default-jdk maven jenkins git unzip
 
+
+# Generate key pair to be used by git if they do not exist already
+if [ ! -d /vagrant/keys ]; then
+  mkdir -p /vagrant/keys
+  pushd /vagrant/keys
+  ssh-keygen -t rsa -C "omegapoint" -q -f id_rsa -N ''
+  popd
+fi
+
+# Set up git server
+sudo adduser --disabled-password --gecos "" git
+sudo su git
+cd /home/git
+mkdir .ssh && chmod 700 .ssh
+touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
+cat /vagrant/keys/id_rsa.pub >> ~/.ssh/authorized_keys
+mkdir cicd_repo.git
+cd cicd_repo.git
+git init --bare
+exit
+
+
 # Install Oracle Java 7 and 8
 # (thanks to https://gist.github.com/tinkerware/cf0c47bb69bf42c2d740)
 apt-get -y -q update
@@ -48,23 +70,6 @@ sudo service nexus start
 popd
 popd
 
-# Generate key pair to be used by git
-mkdir -p /vagrant/keys
-pushd /vagrant/keys
-ssh-keygen -t rsa -C "omegapoint" -q -f id_rsa -N ''
-popd
-
-# Set up git server
-sudo adduser --disabled-password --gecos "" git
-sudo su git
-cd /home/git
-mkdir .ssh && chmod 700 .ssh
-touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
-cat /vagrant/keys/id_rsa.pub >> ~/.ssh/authorized_keys
-mkdir cicd_repo.git
-cd cicd_repo.git
-git init --bare
-exit
 
 # Set environment variables
 sudo cp /vagrant/environment /etc/environment
