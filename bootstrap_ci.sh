@@ -22,9 +22,8 @@ apt-get -y -q install oracle-java7-installer
 update-java-alternatives -s java-8-oracle
 
 # Install Artifactory
-#sudo cp /vagrant/artifactory-3.5.1.zip /opt
 pushd /opt
-sudo wget -q -O artifactory-3.5.1.zip http://bit.ly/Hqv9aj
+sudo wget -O artifactory-3.5.1.zip http://bit.ly/Hqv9aj
 sudo unzip artifactory-3.5.1.zip
 sudo rm -f artifactory-3.5.1.zip
 sudo ln -s `ls -1d artifactory-*` artifactory
@@ -58,7 +57,7 @@ popd
 # Set up git server
 sudo adduser --disabled-password --gecos "" git
 sudo su git
-cd ~
+cd /home/git
 mkdir .ssh && chmod 700 .ssh
 touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
 cat /vagrant/keys/id_rsa.pub >> ~/.ssh/authorized_keys
