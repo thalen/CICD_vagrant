@@ -19,15 +19,17 @@ Det kommer att finnas tre maskiner:
 
 ## Nexus:
  http://192.168.33.10:8081/nexus
+ 
  user: admin
  password: admin123
  
 ## Artifactory:
  http://192.168.33.10:8082/artifactory
+ 
  user: admin
  password: password
 
 ## Git:
- ssh-add keys/id_rsa
- ssh-add .vagrant/machines/default/virtualbox/private_key
- git clone git@192.168.33.10:cicd_repo.git
+ssh-add keys/id_rsa
+ 
+git clone git@192.168.33.10:cicd_repo.git
