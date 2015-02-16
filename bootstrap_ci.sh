@@ -6,7 +6,7 @@ sudo echo "deb http://pkg.jenkins-ci.org/debian binary/" >> /etc/apt/sources.lis
 
 # Basic stuff
 apt-get update
-apt-get install -y apache2 default-jdk jenkins git unzip
+apt-get install -y apache2 default-jdk maven jenkins git unzip
 
 # Install Artifactory
 #sudo cp /vagrant/artifactory-3.5.1.zip /opt
@@ -24,7 +24,7 @@ popd
 # Install Nexus
 pushd /usr/local
 sudo wget -q -O nexus-latest-bundle.tar.gz http://www.sonatype.org/downloads/nexus-latest-bundle.tar.gz
-sudo tar xvzf nexus-latest-bundle.tar.gz
+sudo tar xzf nexus-latest-bundle.tar.gz
 sudo rm -f nexus-latest-bundle.tar.gz
 sudo ln -s `ls -1d nexus-*` nexus
 sudo cp /vagrant/nexus /etc/init.d/nexus
@@ -36,6 +36,23 @@ sudo service nexus start
 popd
 popd
 
+# Generate key pair to be used by git
+mkdir -p /vagrant/keys
+pushd /vagrant/keys
+ssh-keygen -t rsa -C "omegapoint" -q -f id_rsa -N ''
+popd
+
+# Set up git server
+sudo adduser --disabled-password --gecos "" git
+sudo su git
+cd ~
+mkdir .ssh && chmod 700 .ssh
+touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
+cat /vagrant/keys/id_rsa.pub >> ~/.ssh/authorized_keys
+mkdir cicd_repo.git
+cd cicd_repo.git
+git init --bare
+exit
 
 # Set environment variables
 sudo cp /vagrant/environment /etc/environment
