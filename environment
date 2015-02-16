@@ -1,0 +1,5 @@
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+
+JAVA_HOME=/usr/lib/jvm/default-java
+NEXUS_HOME=/usr/local/nexus
+ARTIFACTORY_HOME=/opt/artifactory
