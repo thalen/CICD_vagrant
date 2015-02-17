@@ -19,15 +19,14 @@ fi
 
 # Set up git server
 sudo adduser --disabled-password --gecos "" git
-sudo su git
 cd /home/git
-mkdir .ssh && chmod 700 .ssh
-touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
-cat /vagrant/keys/id_rsa.pub >> ~/.ssh/authorized_keys
-mkdir cicd_repo.git
+sudo -u git mkdir .ssh && sudo -u git chmod 700 .ssh
+sudo -u git touch .ssh/authorized_keys && sudo -u git chmod 600 .ssh/authorized_keys
+sudo -u git cat /vagrant/keys/id_rsa.pub >> ~/.ssh/authorized_keys
+sudo -u git mkdir cicd_repo.git
 cd cicd_repo.git
-git init --bare
-exit
+sudo -u git git init --bare
+
 
 
 # Install Oracle Java 7 and 8
@@ -69,6 +68,10 @@ sudo update-rc.d nexus defaults
 sudo service nexus start
 popd
 popd
+
+# Start up Jenkins
+sudo service jenkins start
+
 
 
 # Set environment variables
