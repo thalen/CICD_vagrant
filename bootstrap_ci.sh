@@ -26,8 +26,18 @@ sudo -u git cat /vagrant/keys/id_rsa.pub >> ~/.ssh/authorized_keys
 sudo -u git mkdir cicd_repo.git
 cd cicd_repo.git
 sudo -u git git init --bare
-
-
+#add front-end project repo
+cd ..
+sudo -u git mkdir frontend_project.git
+sudo -u git cp -r /vagrant/multicore_kompetensdag/* frontend_project.git
+cd frontend_project.git
+sudo -u git cp /vagrant/multicore_kompetensdag/.gitignore .
+sudo -u git cp /vagrant/multicore_kompetensdag/.bowerrc .
+git config --global user.name "vagrant"
+git config --global user.email "vagrant@omegapoint.se"
+sudo -u git git init
+sudo -u git git add .
+sudo -u git git commit -m "initial commit"
 
 # Install Oracle Java 7 and 8
 # (thanks to https://gist.github.com/tinkerware/cf0c47bb69bf42c2d740)
