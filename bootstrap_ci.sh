@@ -22,7 +22,7 @@ sudo adduser --disabled-password --gecos "" git
 cd /home/git
 sudo -u git mkdir .ssh && sudo -u git chmod 700 .ssh
 sudo -u git touch .ssh/authorized_keys && sudo -u git chmod 600 .ssh/authorized_keys
-sudo -u git cat /vagrant/keys/id_rsa.pub >> ~/.ssh/authorized_keys
+sudo -u git cat /vagrant/keys/id_rsa.pub > ~/.ssh/authorized_keys
 sudo -u git mkdir cicd_repo.git
 cd cicd_repo.git
 sudo -u git git init --bare
